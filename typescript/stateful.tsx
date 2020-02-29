@@ -1,11 +1,11 @@
 
 import React, {useState } from 'react';
-import {SimpleGallery,SimpleCanvas2} from "./stateless"
+import {SimpleGallery,SimpleCanvas2,ITodoItem} from "./stateless"
 /*Assignment 1-counter*/
 
+
 function Counter(){
-    //learning note: react will remember the current state variables valus between re-renders
-    const [counter, setCounter]= useState(0);
+    const [counter, setCounter]= useState<number>(0);
 
     return (<div>
             <span>{counter}</span>
@@ -22,15 +22,13 @@ function Counter(){
 function Gallery(){
     const initImages= ["https://i.ytimg.com/vi/MCn9lL94sxQ/maxresdefault.jpg",
     "http://i.imgur.com/iJoG4Ks.jpg"]
-    const [images,setImages]= useState(initImages);
+    const [images,setImages]= useState<string[]>(initImages);
 
     const addNewImage=()=>{
         const src= window.prompt("What is your new image src?");
         if(src){
             const newImages = images.splice(0);
             newImages.push(src);
-            /* learinig note: when giving a refernce, we must send a new refernce 
-            in order the component to be re-render */
             setImages(newImages);
         }
     }
@@ -45,15 +43,14 @@ function Gallery(){
 /*Assignment 3- Canvasv2*/
 
 function Canvasv2(){
-    /*note: we will normally use multiple useState */
     const initialGridColors=[["red","yellow","blue","orange"],
     ["red","yellow","blue","orange"],
     ["red","yellow","blue","orange"],
     ["red","yellow","blue","orange"]];
 
-    const [gridColors, setGridColors]= useState(initialGridColors);
+    const [gridColors, setGridColors]= useState<string[][]>(initialGridColors);
 
-    const toggleColor=(row,column,currColor)=>{
+    const toggleColor=(row: number,column:number,currColor:string)=>{
         const colors_array= ["red","yellow","blue","orange"];
         const currColorIndex = colors_array.indexOf(currColor);
         const newColor = colors_array[(currColorIndex+1) % colors_array.length];
@@ -67,8 +64,8 @@ function Canvasv2(){
 
 /*Assignment 4- Todoapp*/
 
-function TodoItemV2(props){
-    const [isItemDone,setIsItemDone]=useState(props.done);
+function TodoItemV2(props : ITodoItem){
+    const [isItemDone,setIsItemDone]=useState<boolean>(props.done);
     const title = props.title;
     
     return <p className={ isItemDone ? "task-done" : null} 
@@ -83,7 +80,7 @@ function TodoAppV2(){
         {title:"Reach 1M",done:true},
         {title:"Reach 5M",done:false}];
 
-    const [items,setItems]=useState(initialItems);
+    const [items,setItems]=useState<ITodoItem[]>(initialItems);
 
     const handleAddItem=(e)=>{
         e.preventDefault();
@@ -94,7 +91,7 @@ function TodoAppV2(){
         setItems([...items]);
     }
 
-    const handleRemoveItem =(itemIdx)=>{
+    const handleRemoveItem =(itemIdx: number)=>{
         items.splice(itemIdx,1)
         setItems([...items]);
     }

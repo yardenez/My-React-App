@@ -1,28 +1,46 @@
 import React from 'react';
-
 /* Assignment 1 */
 
-function Title(props){
+/*Recommendation:
+const Comp: React.FC<TitleProps> = (props) => {
+    const [count, setCount] = React.useState<number>(0);
+    return <h1>{props.text}</h1>;
+}
+*/
+interface ITitle {
+    text: string;
+}
+
+function Title(props: ITitle) {
     return <h1>{props.text}</h1>;
 }
 
 /* Assignment 2 */
 
-function Heading(props){
+interface IHeading{
+    title:string;
+    subtitle:string;
+}
+
+function Heading(props : IHeading){
     return (
         <>
             <Title text={props.title}></Title> 
             <h2>{props.subtitle}</h2>
         </>
-        );
+    );
 }
 
 /* Assignment 3 */
 
-function ImageView(props){
+interface IImageView{
+    src:string;
+    caption?:string;
+}
+
+function ImageView(props : IImageView){
     return(
         <>
-            {/* learning-note: adding alt tag to image component is a good practice */}
             <img src={props.src} alt=""></img> 
             <p>{props.caption}</p>
         </>
@@ -30,17 +48,24 @@ function ImageView(props){
 }
 
 /* Assignment 4 */
+interface ISimpleGallery{
+    images:string[];
+}
 
-export function SimpleGallery(props){
+export function SimpleGallery(props:ISimpleGallery){
     const images = props.images;
-    /* lerarning-note: a key should be static and unique.
-             as for the array is static, it is not dangeorus to use the index as key.  */
-    return images.map( (imgSrc,index) => <ImageView key={index} src={imgSrc}></ImageView>)
+    const imagesGallery =images.map( (imgSrc,index) => <ImageView key={index} src={imgSrc}></ImageView>);
+    return <div>{imagesGallery}</div>
 }
 
 /* Assignment 5 */
 
-function TodoItem(props){
+export interface ITodoItem{
+    done:boolean;
+    title:string;
+}
+
+function TodoItem(props: ITodoItem){
     const isItemDone = props.done;
     const title = props.title;
     
@@ -50,7 +75,12 @@ function TodoItem(props){
 
 /* Assignment 6 */
 
-function Framer(props){
+interface IFramer{
+    color:string;
+    caption:string;
+}
+
+function Framer(props: IFramer){
     return (
         <div style={{background: "black", color:props.color}}>
             props.caption
@@ -59,16 +89,24 @@ function Framer(props){
 }
 
 /* Assignment 7 */
-
-function GridRow(props){
-    const colorList = props.gridCellsColorList;
-    const rowIdx = props.gridRowIndex;
-    return colorList.map((color,colIdx) => 
-            <div key={`${rowIdx},${colIdx}`} className="gridCell" style={{background:color}}></div>
-        );
+interface IGridRow{
+    gridCellsColorList:string[];
+    gridRowIndex:number;
 }
 
-function SimpleCanvas(props){
+function GridRow(props:IGridRow){
+    const colorList = props.gridCellsColorList;
+    const rowIdx = props.gridRowIndex;
+    const gridRowCells= colorList.map((color,colIdx) => 
+        <div key={`${rowIdx},${colIdx}`} className="gridCell" style={{background:color}}></div>);
+   return <>{gridRowCells}</>
+}
+
+interface ISimpleCanvas{
+    data:string[][];
+}
+
+function SimpleCanvas(props:ISimpleCanvas){
     const gridRows = props.data;
     return gridRows.map((gridRow, gridRowIdx) => {
         return <div key={gridRowIdx} className="display-items-inline">
@@ -79,7 +117,13 @@ function SimpleCanvas(props){
 
 /* Assignment 8 */
 
-function SpecialButton(props){
+interface ISpecialButton{
+    onSpecialClick: ()=>void;
+    onClick:()=>void;
+    children:string;
+}
+
+function SpecialButton(props:ISpecialButton){
 
     function handleClick(e){
         if (e.ctrlKey || e.metaKey) {  
@@ -95,7 +139,13 @@ function SpecialButton(props){
 
 /* Assignment 9*/
 
-function TodoItem2(props){
+interface ITodoItem2{
+    completed:boolean;
+    title:string;
+    onRemove:()=>void;
+} 
+
+function TodoItem2(props : ITodoItem2){
     const {title,completed} = props;
     function safeRemove(){
         const confirmation = window.confirm("Are you sure you wish to remove this task?");
@@ -107,27 +157,47 @@ function TodoItem2(props){
     </div>)
 }
 
-/* Assignment 10*/
-function GridRow2(props){
-    const {onCellClick, gridCellsColorList,gridRowIdx} = props;
-    return gridCellsColorList.map((color,colIdx) => 
-            <div onClick={()=>onCellClick(gridRowIdx,colIdx,color)} key={`${gridRowIdx},${colIdx}`} className="gridCell" style={{background:color}}></div>
-        );
+interface IGridRow2{
+    gridCellsColorList:string[];
+    gridRowIdx:number;
+    onCellClick: (rowIdx,ColIdx,color)=>void;
 }
 
-export function SimpleCanvas2(props){
+/* Assignment 10*/
+function GridRow2(props:IGridRow2){
+    const {onCellClick, gridCellsColorList,gridRowIdx} = props;
+    const gridRowCells=gridCellsColorList.map((color,colIdx) => 
+        <div onClick={()=>onCellClick(gridRowIdx,colIdx,color)} key={`${gridRowIdx},${colIdx}`} className="gridCell" style={{background:color}}></div>);
+    return <div>
+        {gridRowCells}
+    </div>
+}
+
+interface ISimpleCanvas2{
+    data:string[][];
+    onCellClick: (rowIdx,ColIdx,color)=>void;
+}
+
+export function SimpleCanvas2(props :ISimpleCanvas2){
     const gridRows = props.data;
     const onCellClick = props.onCellClick;
-    return gridRows.map((gridRow, gridRowIdx) => {
+    const canvas=gridRows.map((gridRow, gridRowIdx) => {
         return <div key={gridRowIdx} className="display-items-inline">
             <GridRow2 onCellClick={onCellClick} gridRowIdx={gridRowIdx} gridCellsColorList={gridRow}></GridRow2>
         </div>
     });
+    return <div>{canvas}</div>
 }
 
 /* Assignment 11*/
 
-function TodoApp(props){
+interface ITodoApp{
+    items:ITodoItem[];
+    onRemove:(number)=>void;
+    onAddItem:(string)=>void;
+}
+
+function TodoApp(props :ITodoApp){
     const {items,onRemove,onAddItem} = props;
     const handleAddItem=()=>{
         const itemTitle =window.prompt("Please write your new item");
