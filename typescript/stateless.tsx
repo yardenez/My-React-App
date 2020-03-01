@@ -69,7 +69,7 @@ function TodoItem(props: ITodoItem){
     const isItemDone = props.done;
     const title = props.title;
     
-    return <p className={ isItemDone ? "task-done" : null}>
+    return <p className={ isItemDone ? "task-done" : undefined}>
            {title}
            </p>}
 
@@ -125,7 +125,7 @@ interface ISpecialButton{
 
 function SpecialButton(props:ISpecialButton){
 
-    function handleClick(e){
+    function handleClick(e:any){
         if (e.ctrlKey || e.metaKey) {  
             props.onSpecialClick();
         }
@@ -160,7 +160,7 @@ function TodoItem2(props : ITodoItem2){
 interface IGridRow2{
     gridCellsColorList:string[];
     gridRowIdx:number;
-    onCellClick: (rowIdx,ColIdx,color)=>void;
+    onCellClick: (rowIdx:number,ColIdx:number,color:string)=>void;
 }
 
 /* Assignment 10*/
@@ -175,7 +175,7 @@ function GridRow2(props:IGridRow2){
 
 interface ISimpleCanvas2{
     data:string[][];
-    onCellClick: (rowIdx,ColIdx,color)=>void;
+    onCellClick: (rowIdx:number,ColIdx:number,color:string)=>void;
 }
 
 export function SimpleCanvas2(props :ISimpleCanvas2){
@@ -193,14 +193,14 @@ export function SimpleCanvas2(props :ISimpleCanvas2){
 
 interface ITodoApp{
     items:ITodoItem[];
-    onRemove:(number)=>void;
-    onAddItem:(string)=>void;
+    onRemove:(itemIdx:number)=>void;
+    onAddItem:(title:string)=>void;
 }
 
 function TodoApp(props :ITodoApp){
     const {items,onRemove,onAddItem} = props;
     const handleAddItem=()=>{
-        const itemTitle =window.prompt("Please write your new item");
+        const itemTitle =window.prompt("Please write your new item's title");
         if(itemTitle){
             onAddItem(itemTitle);
         }

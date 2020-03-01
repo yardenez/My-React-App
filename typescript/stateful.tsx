@@ -68,7 +68,7 @@ function TodoItemV2(props : ITodoItem){
     const [isItemDone,setIsItemDone]=useState<boolean>(props.done);
     const title = props.title;
     
-    return <p className={ isItemDone ? "task-done" : null} 
+    return <p className={ isItemDone ? "task-done" : undefined} 
             onClick={()=>setIsItemDone(!isItemDone)}>
            {title}
            </p>
@@ -82,7 +82,7 @@ function TodoAppV2(){
 
     const [items,setItems]=useState<ITodoItem[]>(initialItems);
 
-    const handleAddItem=(e)=>{
+    const handleAddItem=(e:any)=>{
         e.preventDefault();
         const inputElem= e.target.elements[0];
         const newItemTitle= inputElem.value;
