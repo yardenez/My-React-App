@@ -1,5 +1,5 @@
 
-import React, {useState } from 'react';
+import React, {useState, FormEvent } from 'react';
 import {SimpleGallery,SimpleCanvas2,ITodoItem} from "./stateless"
 /*Assignment 1-counter*/
 
@@ -82,13 +82,15 @@ function TodoAppV2(){
 
     const [items,setItems]=useState<ITodoItem[]>(initialItems);
 
-    const handleAddItem=(e:any)=>{
+    const handleAddItem=(e:FormEvent)=>{
         e.preventDefault();
-        const inputElem= e.target.elements[0];
-        const newItemTitle= inputElem.value;
-        const newItem={title:newItemTitle, done:false};
-        items.push(newItem);
-        setItems([...items]);
+        if(e!==null){
+            const inputElem= (e.target as HTMLFormElement).elements[0];
+            const newItemTitle= (inputElem as HTMLInputElement).value;
+            const newItem={title:newItemTitle, done:false};
+            items.push(newItem);
+            setItems([...items]);
+        }    
     }
 
     const handleRemoveItem =(itemIdx: number)=>{
